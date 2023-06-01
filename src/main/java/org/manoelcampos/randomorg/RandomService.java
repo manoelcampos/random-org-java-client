@@ -19,7 +19,8 @@ import java.util.stream.IntStream;
  * @author Manoel Campos da Silva Filho
  */
 public class RandomService {
-    private static final int MIN_VALUE = 0;
+    private static final int MIN_VALUE = -100000000;
+    private static final int MAX_VALUE =  100000000;
     private static final boolean ENABLE_DUPLICATES = true;
     private final String API_KEY;
     private static final String API_PATH = "https://api.random.org/json-rpc/4/invoke";
@@ -51,7 +52,7 @@ public class RandomService {
     }
 
     public IntStream ints(final long streamSize) {
-        final var json = JSON_REQ_TEMPLATE.formatted(API_KEY, streamSize, MIN_VALUE, Short.MAX_VALUE, ENABLE_DUPLICATES);
+        final var json = JSON_REQ_TEMPLATE.formatted(API_KEY, streamSize, MIN_VALUE, MAX_VALUE, ENABLE_DUPLICATES);
         try {
             final var req =
                     HttpRequest
