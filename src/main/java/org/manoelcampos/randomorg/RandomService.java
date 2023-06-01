@@ -15,14 +15,12 @@ import java.util.stream.IntStream;
 
 /**
  * Client to htts://random.org service.
- * Inspired by {@link java.util.random.RandomGenerator} interface.
  * @author Manoel Campos da Silva Filho
  * @see <a href="https://api.random.org/json-rpc/4/basic">API Docs</a>
  */
 public class RandomService {
-    private static final int MIN_VALUE = -100000000;
-    private static final int MAX_VALUE =  100000000;
-    private static final boolean ENABLE_DUPLICATES = true;
+    public static final int MIN_VALUE = -100000000;
+    public static final int MAX_VALUE =  100000000;
     private final String API_KEY;
     private static final String API_PATH = "https://api.random.org/json-rpc/4/invoke";
     private static final String JSON_REQ_TEMPLATE =
@@ -52,8 +50,61 @@ public class RandomService {
         client = HttpClient.newBuilder().build();
     }
 
-    public IntStream ints(final long streamSize) {
-        final var json = JSON_REQ_TEMPLATE.formatted(API_KEY, streamSize, MIN_VALUE, MAX_VALUE, ENABLE_DUPLICATES);
+    /**
+     * Generate n real random integers between [{@link #MIN_VALUE} .. {@link #MAX_VALUE}].
+     * Allows generation of duplicated integers.
+     * @param n number of random integers to generate
+     * @return a {@link IntStream} containing the random integers
+     */
+    public IntStream generateIntegers(final long n) {
+        return generateIntegers(n, MIN_VALUE, MAX_VALUE);
+    }
+
+    /**
+     * Generate n real random integers between [{@link #MIN_VALUE} .. {@link #MAX_VALUE}]
+     * <b>that don't repeat (there will be no duplicated numbers).</b>
+     *
+     * @param n number of random integers to generate
+     * @return a {@link IntStream} containing the random integers
+     */
+    public IntStream generateNonDuplicatedIntegers(final long n) {
+        return generateIntegers(n, MIN_VALUE, MAX_VALUE, false);
+    }
+
+    /**
+     * Generate n real random integers between [minValue .. maxValue].
+     * Allows generation of duplicated integers.
+     *
+     * @param n number of random integers to generate
+     * @param minValue the minimum value for a generated random int
+     * @param maxValue the maximum value for a generated random int
+     * @return a {@link IntStream} containing the random integers
+     */
+    public IntStream generateIntegers(final long n, final double minValue, final double maxValue) {
+        return generateIntegers(n, minValue, maxValue, true);
+    }
+
+    /**
+     * Generate n real random integers between [minValue .. maxValue]
+     * <b>that don't repeat (there will be no duplicated numbers).</b>
+     *
+     * @param n number of random integers to generate
+     * @param minValue the minimum value for a generated random int
+     * @param maxValue the maximum value for a generated random int
+     * @return a {@link IntStream} containing the random integers
+     */
+    public IntStream generateNonDuplicatedIntegers(final long n, final double minValue, final double maxValue) {
+        return generateIntegers(n, minValue, maxValue, false);
+    }
+
+    private IntStream generateIntegers(final long n, final double minValue, final double maxValue, final boolean enableDuplicates) {
+        if(minValue < MIN_VALUE)
+            throw new IllegalArgumentException("minValue cannot be smaller than " + MIN_VALUE);
+
+        if(maxValue > MAX_VALUE)
+            throw new IllegalArgumentException("minValue cannot be higher than " + MAX_VALUE);
+
+        final var json = JSON_REQ_TEMPLATE.formatted(API_KEY, n, minValue, maxValue, enableDuplicates);
         try {
             final var req =
                     HttpRequest
@@ -72,6 +123,6 @@ public class RandomService {
 
     public static void main(String[] args) {
         final var randomService = new RandomService();
-        randomService.ints(4).forEach(System.out::println);
+        randomService.generateIntegers(4).forEach(System.out::println);
     }
 }
