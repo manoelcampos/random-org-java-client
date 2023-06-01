@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
  * @author Manoel Campos da Silva Filho
  * @see <a href="https://api.random.org/json-rpc/4/basic">API Docs</a>
  */
-public class RandomService {
+public class RandomOrgService {
     public static final int MIN_VALUE = -100000000;
     public static final int MAX_VALUE =  100000000;
     private final String API_KEY;
@@ -41,7 +41,7 @@ public class RandomService {
     private final HttpClient client;
     private final ObjectMapper objectMapper;
 
-    public RandomService() {
+    public RandomOrgService() {
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
@@ -122,7 +122,7 @@ public class RandomService {
     }
 
     public static void main(String[] args) {
-        final var randomService = new RandomService();
+        final var randomService = new RandomOrgService();
         randomService.generateIntegers(4).forEach(System.out::println);
     }
 }
