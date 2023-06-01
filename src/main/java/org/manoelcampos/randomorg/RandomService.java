@@ -17,6 +17,7 @@ import java.util.stream.IntStream;
  * Client to htts://random.org service.
  * Inspired by {@link java.util.random.RandomGenerator} interface.
  * @author Manoel Campos da Silva Filho
+ * @see <a href="https://api.random.org/json-rpc/4/basic">API Docs</a>
  */
 public class RandomService {
     private static final int MIN_VALUE = -100000000;
