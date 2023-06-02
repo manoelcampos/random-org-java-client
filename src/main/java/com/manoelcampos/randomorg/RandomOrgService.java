@@ -16,6 +16,15 @@ import java.util.stream.IntStream;
 /**
  * Client to <a href="https://random.org">https://random.org</a> service.
  * You need to create an account at the website and then an API key.
+ * Create a .env file inside your project root directory
+ * and insert the line below:
+ *
+ * <p>
+ * RANDOM_ORG_API_KEY=you-api-key
+ * </p>
+ *
+ * or create an environment variable with the name shown above.
+ *
  * @author Manoel Campos da Silva Filho
  * @see <a href="https://api.random.org/json-rpc/4/basic">API Docs</a>
  */
