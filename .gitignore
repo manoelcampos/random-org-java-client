@@ -1,5 +1,6 @@
 .idea/
 .env
+deploy.sh
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
