@@ -1,4 +1,4 @@
-package org.manoelcampos.randomorg;
+package com.manoelcampos.randomorg;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

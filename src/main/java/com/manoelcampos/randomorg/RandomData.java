@@ -1,4 +1,4 @@
-package org.manoelcampos.randomorg;
+package com.manoelcampos.randomorg;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;

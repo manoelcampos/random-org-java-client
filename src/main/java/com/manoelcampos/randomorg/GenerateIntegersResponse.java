@@ -1,4 +1,4 @@
-package org.manoelcampos.randomorg;
+package com.manoelcampos.randomorg;
 
 import lombok.Getter;
 import lombok.Setter;
