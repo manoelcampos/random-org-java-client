@@ -28,7 +28,7 @@ import java.net.http.HttpResponse;
  */
 public class RandomOrgClient {
     public static final String APIKEY_ENV_VAR_NAME = "RANDOM_ORG_API_KEY";
-    public static final String JSONRPC_VERSION = "2.0";
+    static final String JSONRPC_VERSION = "2.0";
     private final String API_KEY;
     private final HttpClient client;
     private final ObjectMapper objectMapper;
