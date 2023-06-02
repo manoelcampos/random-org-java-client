@@ -26,7 +26,7 @@ import java.net.http.HttpResponse;
  * @author Manoel Campos da Silva Filho
  * @see <a href="https://api.random.org/json-rpc/4/basic">API Docs</a>
  */
-public class RandomOrgClient {
+public class RandomOrgClient implements RandomNumberGenerator {
     public static final String APIKEY_ENV_VAR_NAME = "RANDOM_ORG_API_KEY";
     static final String JSONRPC_VERSION = "2.0";
     private final String API_KEY;
@@ -54,49 +54,22 @@ public class RandomOrgClient {
         client = HttpClient.newBuilder().build();
     }
 
-    /**
-     * Generate n real random integers between [{@link GenerateIntegersRequestParams#MIN_VALUE} .. {@link GenerateIntegersRequestParams#MAX_VALUE}].
-     * Allows generation of duplicated integers.
-     * @param n number of random integers to generate
-     * @return an array containing the random integers
-     */
+    @Override
     public int[] generateIntegers(final int n) {
         return generateIntegers(new GenerateIntegersRequestParams(n));
     }
 
-    /**
-     * Generate n real random integers between [{@link GenerateIntegersRequestParams#MIN_VALUE} .. {@link GenerateIntegersRequestParams#MAX_VALUE}]
-     * <b>that don't repeat (there will be no duplicated numbers).</b>
-     *
-     * @param n number of random integers to generate
-     * @return an array containing the random integers
-     */
+    @Override
     public int[] generateNonDuplicatedIntegers(final int n) {
         return generateIntegers(new GenerateIntegersRequestParams(n, false));
     }
 
-    /**
-     * Generate n real random integers between [minValue .. maxValue].
-     * Allows generation of duplicated integers.
-     *
-     * @param n number of random integers to generate
-     * @param minValue the minimum value for a generated random int
-     * @param maxValue the maximum value for a generated random int
-     * @return an array containing the random integers
-     */
+    @Override
     public int[] generateIntegers(final int n, final int minValue, final int maxValue) {
         return generateIntegers(new GenerateIntegersRequestParams(n, minValue, maxValue));
     }
 
-    /**
-     * Generate n real random integers between [minValue .. maxValue]
-     * <b>that don't repeat (there will be no duplicated numbers).</b>
-     *
-     * @param n number of random integers to generate
-     * @param minValue the minimum value for a generated random int
-     * @param maxValue the maximum value for a generated random int
-     * @return an array containing the random integers
-     */
+    @Override
     public int[] generateNonDuplicatedIntegers(final int n, final int minValue, final int maxValue) {
         return generateIntegers(new GenerateIntegersRequestParams(n, minValue, maxValue, false));
     }
