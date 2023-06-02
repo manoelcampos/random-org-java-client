@@ -11,7 +11,7 @@ import lombok.Setter;
 class GenerateIntegersRequestData {
     public static final String API_PATH = "https://api.random.org/json-rpc/4/invoke";
     private final int id = 42;
-    private final String jsonrpc = RandomOrgService.JSONRPC_VERSION;
+    private final String jsonrpc = RandomOrgClient.JSONRPC_VERSION;
     private final String method = "generateIntegers";
     private final GenerateIntegersRequestParams params;
 }
