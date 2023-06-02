@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.stream.IntStream;
 
 /**
- * Client to htts://random.org service.
+ * Client to https://random.org service.
  * @author Manoel Campos da Silva Filho
  * @see <a href="https://api.random.org/json-rpc/4/basic">API Docs</a>
  */
