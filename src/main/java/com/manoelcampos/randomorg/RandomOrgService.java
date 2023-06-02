@@ -117,7 +117,9 @@ public class RandomOrgService {
         final int n = 4;
         final int minValue = 1;
         final int maxValue = 10;
-        System.out.printf("Generating %d real random integers from [%d ..%d] using %s%n", n, minValue, maxValue, randomService.getClass().getSimpleName());
+        System.out.printf(
+                "Generating %d real random integers from [%d ..%d] using %s%n",
+                n, minValue, maxValue, randomService.getClass().getSimpleName());
         Arrays.stream(randomService.generateIntegers(n, minValue, maxValue)).forEach(System.out::println);
     }
 }
