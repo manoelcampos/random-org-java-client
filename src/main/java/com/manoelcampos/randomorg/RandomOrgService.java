@@ -27,6 +27,7 @@ import java.net.http.HttpResponse;
  * @see <a href="https://api.random.org/json-rpc/4/basic">API Docs</a>
  */
 public class RandomOrgService {
+    public static final String APIKEY_ENV_VAR_NAME = "RANDOM_ORG_API_KEY";
     public static final String JSONRPC_VERSION = "2.0";
     private final String API_KEY;
     private final HttpClient client;
@@ -35,13 +36,21 @@ public class RandomOrgService {
     /**
      * Instantiates an object for sending requests to the random.org service
      * to generate real random values.
+     * Reads the API Key from an environment variable with the name
+     * as indicated by {@link #APIKEY_ENV_VAR_NAME}.
      */
     public RandomOrgService() {
+        this(Dotenv.load().get(APIKEY_ENV_VAR_NAME));
+    }
+
+    /**
+     * Instantiates an object for sending requests to the random.org service
+     * to generate real random values.
+     */
+    public RandomOrgService(final String apiKey) {
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-
-        final var dotenv = Dotenv.load();
-        API_KEY = dotenv.get("RANDOM_ORG_API_KEY");
+        API_KEY = apiKey;
         client = HttpClient.newBuilder().build();
     }
 
