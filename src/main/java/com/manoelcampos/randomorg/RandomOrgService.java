@@ -15,6 +15,7 @@ import java.util.stream.IntStream;
 
 /**
  * Client to <a href="https://random.org">https://random.org</a> service.
+ * You need to create an account at the website and then an API key.
  * @author Manoel Campos da Silva Filho
  * @see <a href="https://api.random.org/json-rpc/4/basic">API Docs</a>
  */
