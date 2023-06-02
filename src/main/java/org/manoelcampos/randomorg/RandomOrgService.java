@@ -19,28 +19,15 @@ import java.util.stream.IntStream;
  * @see <a href="https://api.random.org/json-rpc/4/basic">API Docs</a>
  */
 public class RandomOrgService {
-    public static final int MIN_VALUE = -100000000;
-    public static final int MAX_VALUE =  100000000;
+    public static final String JSONRPC_VERSION = "2.0";
     private final String API_KEY;
-    private static final String API_PATH = "https://api.random.org/json-rpc/4/invoke";
-    private static final String JSON_REQ_TEMPLATE =
-            """
-            {
-                "jsonrpc": "2.0",
-                "method": "generateIntegers",
-                "params": {
-                    "apiKey": "%s",
-                    "n": %d,
-                    "min": %d,
-                    "max": %d,
-                    "replacement": %s
-                },
-                "id": 42
-            }
-            """;
     private final HttpClient client;
     private final ObjectMapper objectMapper;
 
+    /**
+     * Instantiates an object for sending requests to the random.org service
+     * to generate real random values.
+     */
     public RandomOrgService() {
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -51,24 +38,24 @@ public class RandomOrgService {
     }
 
     /**
-     * Generate n real random integers between [{@link #MIN_VALUE} .. {@link #MAX_VALUE}].
+     * Generate n real random integers between [{@link GenerateIntegersRequestParams#MIN_VALUE} .. {@link GenerateIntegersRequestParams#MAX_VALUE}].
      * Allows generation of duplicated integers.
      * @param n number of random integers to generate
      * @return a {@link IntStream} containing the random integers
      */
-    public IntStream generateIntegers(final long n) {
-        return generateIntegers(n, MIN_VALUE, MAX_VALUE);
+    public IntStream generateIntegers(final int n) {
+        return generateIntegers(new GenerateIntegersRequestParams(n));
     }
 
     /**
-     * Generate n real random integers between [{@link #MIN_VALUE} .. {@link #MAX_VALUE}]
+     * Generate n real random integers between [{@link GenerateIntegersRequestParams#MIN_VALUE} .. {@link GenerateIntegersRequestParams#MAX_VALUE}]
      * <b>that don't repeat (there will be no duplicated numbers).</b>
      *
      * @param n number of random integers to generate
      * @return a {@link IntStream} containing the random integers
      */
-    public IntStream generateNonDuplicatedIntegers(final long n) {
-        return generateIntegers(n, MIN_VALUE, MAX_VALUE, false);
+    public IntStream generateNonDuplicatedIntegers(final int n) {
+        return generateIntegers(new GenerateIntegersRequestParams(n, false));
     }
 
     /**
@@ -80,8 +67,8 @@ public class RandomOrgService {
      * @param maxValue the maximum value for a generated random int
      * @return a {@link IntStream} containing the random integers
      */
-    public IntStream generateIntegers(final long n, final double minValue, final double maxValue) {
-        return generateIntegers(n, minValue, maxValue, true);
+    public IntStream generateIntegers(final int n, final int minValue, final int maxValue) {
+        return generateIntegers(new GenerateIntegersRequestParams(n, minValue, maxValue));
     }
 
     /**
@@ -93,22 +80,17 @@ public class RandomOrgService {
      * @param maxValue the maximum value for a generated random int
      * @return a {@link IntStream} containing the random integers
      */
-    public IntStream generateNonDuplicatedIntegers(final long n, final double minValue, final double maxValue) {
-        return generateIntegers(n, minValue, maxValue, false);
+    public IntStream generateNonDuplicatedIntegers(final int n, final int minValue, final int maxValue) {
+        return generateIntegers(new GenerateIntegersRequestParams(n, minValue, maxValue, false));
     }
 
-    private IntStream generateIntegers(final long n, final double minValue, final double maxValue, final boolean enableDuplicates) {
-        if(minValue < MIN_VALUE)
-            throw new IllegalArgumentException("minValue cannot be smaller than " + MIN_VALUE);
-
-        if(maxValue > MAX_VALUE)
-            throw new IllegalArgumentException("minValue cannot be higher than " + MAX_VALUE);
-
-        final var json = JSON_REQ_TEMPLATE.formatted(API_KEY, n, minValue, maxValue, enableDuplicates);
+    private IntStream generateIntegers(final GenerateIntegersRequestParams params) {
+        final var data = new GenerateIntegersRequestData(params.setApiKey(API_KEY));
         try {
+            final var json = objectMapper.writeValueAsString(data);
             final var req =
                     HttpRequest
-                            .newBuilder(new URI(API_PATH))
+                            .newBuilder(new URI(GenerateIntegersRequestData.API_PATH))
                             .header("content-type", "application/json")
                             .POST(HttpRequest.BodyPublishers.ofString(json))
                             .build();
@@ -123,6 +105,10 @@ public class RandomOrgService {
 
     public static void main(String[] args) {
         final var randomService = new RandomOrgService();
-        randomService.generateIntegers(4).forEach(System.out::println);
+        final int n = 4;
+        final int minValue = 1;
+        final int maxValue = 10;
+        System.out.printf("Generating %d real random integers from [%d ..%d] using %s%n", n, minValue, maxValue, randomService.getClass().getSimpleName());
+        randomService.generateIntegers(n, minValue, maxValue).forEach(System.out::println);
     }
 }
