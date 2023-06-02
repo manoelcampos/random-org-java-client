@@ -10,7 +10,6 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Arrays;
 
 /**
  * Client to <a href="https://random.org">https://random.org</a> service.
@@ -120,6 +119,8 @@ public class RandomOrgService {
         System.out.printf(
                 "Generating %d real random integers from [%d ..%d] using %s%n",
                 n, minValue, maxValue, randomService.getClass().getSimpleName());
-        Arrays.stream(randomService.generateIntegers(n, minValue, maxValue)).forEach(System.out::println);
+        for (final int number : randomService.generateIntegers(n, minValue, maxValue)) {
+            System.out.println(number);
+        }
     }
 }
