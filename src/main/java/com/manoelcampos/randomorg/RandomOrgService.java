@@ -11,7 +11,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 /**
  * Client to <a href="https://random.org">https://random.org</a> service.
@@ -51,9 +50,9 @@ public class RandomOrgService {
      * Generate n real random integers between [{@link GenerateIntegersRequestParams#MIN_VALUE} .. {@link GenerateIntegersRequestParams#MAX_VALUE}].
      * Allows generation of duplicated integers.
      * @param n number of random integers to generate
-     * @return a {@link IntStream} containing the random integers
+     * @return an array containing the random integers
      */
-    public IntStream generateIntegers(final int n) {
+    public int[] generateIntegers(final int n) {
         return generateIntegers(new GenerateIntegersRequestParams(n));
     }
 
@@ -62,9 +61,9 @@ public class RandomOrgService {
      * <b>that don't repeat (there will be no duplicated numbers).</b>
      *
      * @param n number of random integers to generate
-     * @return a {@link IntStream} containing the random integers
+     * @return an array containing the random integers
      */
-    public IntStream generateNonDuplicatedIntegers(final int n) {
+    public int[] generateNonDuplicatedIntegers(final int n) {
         return generateIntegers(new GenerateIntegersRequestParams(n, false));
     }
 
@@ -75,9 +74,9 @@ public class RandomOrgService {
      * @param n number of random integers to generate
      * @param minValue the minimum value for a generated random int
      * @param maxValue the maximum value for a generated random int
-     * @return a {@link IntStream} containing the random integers
+     * @return an array containing the random integers
      */
-    public IntStream generateIntegers(final int n, final int minValue, final int maxValue) {
+    public int[] generateIntegers(final int n, final int minValue, final int maxValue) {
         return generateIntegers(new GenerateIntegersRequestParams(n, minValue, maxValue));
     }
 
@@ -88,13 +87,13 @@ public class RandomOrgService {
      * @param n number of random integers to generate
      * @param minValue the minimum value for a generated random int
      * @param maxValue the maximum value for a generated random int
-     * @return a {@link IntStream} containing the random integers
+     * @return an array containing the random integers
      */
-    public IntStream generateNonDuplicatedIntegers(final int n, final int minValue, final int maxValue) {
+    public int[] generateNonDuplicatedIntegers(final int n, final int minValue, final int maxValue) {
         return generateIntegers(new GenerateIntegersRequestParams(n, minValue, maxValue, false));
     }
 
-    private IntStream generateIntegers(final GenerateIntegersRequestParams params) {
+    private int[] generateIntegers(final GenerateIntegersRequestParams params) {
         final var data = new GenerateIntegersRequestData(params.setApiKey(API_KEY));
         try {
             final var json = objectMapper.writeValueAsString(data);
@@ -107,7 +106,7 @@ public class RandomOrgService {
 
             final String res = client.send(req, HttpResponse.BodyHandlers.ofString()).body();
             final var generateIntegersResponse = objectMapper.readValue(res, GenerateIntegersResponse.class);
-            return Arrays.stream(generateIntegersResponse.getResult().getRandom().getData());
+            return generateIntegersResponse.getResult().getRandom().getData();
         } catch (URISyntaxException | InterruptedException | IOException e) {
             throw new RuntimeException(e);
         }
@@ -119,6 +118,6 @@ public class RandomOrgService {
         final int minValue = 1;
         final int maxValue = 10;
         System.out.printf("Generating %d real random integers from [%d ..%d] using %s%n", n, minValue, maxValue, randomService.getClass().getSimpleName());
-        randomService.generateIntegers(n, minValue, maxValue).forEach(System.out::println);
+        Arrays.stream(randomService.generateIntegers(n, minValue, maxValue)).forEach(System.out::println);
     }
 }
