@@ -8,9 +8,9 @@ Include the library inside your project's pom.xml:
 
 ```xml
 <dependency>
-    <groupId>com.manoelcampos</groupId>
+    <groupId>io.github.manoelcampos</groupId>
     <artifactId>random-org-client</artifactId>
-    <version>1.1.0</version>
+    <version>LATEST</version>
 </dependency>
 ```
 
