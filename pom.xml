@@ -163,6 +163,7 @@
                                         <arg>--pinentry-mode</arg>
                                         <arg>loopback</arg>
                                     </gpgArguments>
+                                    <passphrase>${env.OSSRH_GPG_SECRET_KEY_PASSWORD}</passphrase>
                                 </configuration>
                             </execution>
                         </executions>
