@@ -18,7 +18,7 @@ Include the library inside your project's pom.xml:
 
 Check an example inside the [main method here](https://github.com/manoelcampos/random-org-java-client/blob/master/src/main/java/com/manoelcampos/randomorg/RandomOrgClient.java#L115).
 
-The example is loading the service API key from a .env file.
-In order to make it work in your project, create a .env file inside the project root dir and insert your API key, as demonstrated in [ .env.example]( .env.example).
+The example is loading the service API key from a `.env` file.
+In order to make it work in your project, create a `.env` file inside the project root dir and insert your API key, as demonstrated in [.env.example]( .env.example).
 
-If you don't want to use an .env file, just pass the API key to the `RandomOrgClient` constructor.
+If you don't want to use an `.env` file, just pass the API key to the `RandomOrgClient` constructor.
