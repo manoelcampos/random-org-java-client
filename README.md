@@ -1,4 +1,4 @@
-# A Java client to get real random integers from https://random.org [![build](https://github.com/manoelcampos/random-org-java-client/actions/workflows/build.yml/badge.svg)](https://github.com/manoelcampos/random-org-java-client/actions/workflows/build.yml) [![javadoc](https://javadoc.io/badge2/com.manoelcampos/random-org-client/javadoc.svg)](https://javadoc.io/doc/com.manoelcampos/random-org-client)
+# A Java client to get real random integers from https://random.org [![build](https://github.com/manoelcampos/random-org-java-client/actions/workflows/build.yml/badge.svg)](https://github.com/manoelcampos/random-org-java-client/actions/workflows/build.yml) [![javadoc](https://javadoc.io/badge2/com.manoelcampos/random-org-client/javadoc.svg)](https://javadoc.io/doc/com.manoelcampos/random-org-client) [![Maven Central](https://img.shields.io/maven-central/v/io.github.manoelcampos/random-org-client.svg?label=Maven%20Central)](https://central.sonatype.com/search?q=random-org-client&namespace=io.github.manoelcampos)
 
 ## How to use
 

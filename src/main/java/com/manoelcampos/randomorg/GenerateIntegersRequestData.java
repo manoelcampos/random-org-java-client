@@ -1,17 +1,17 @@
 package com.manoelcampos.randomorg;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
 /**
- *  @author Manoel Campos da Silva Filho
+ * @author Manoel Campos da Silva Filho
  */
-@Getter @Setter @AllArgsConstructor
-class GenerateIntegersRequestData {
+record GenerateIntegersRequestData(int id, String jsonrpc, String method, GenerateIntegersRequestParams params)
+{
     public static final String API_PATH = "https://api.random.org/json-rpc/4/invoke";
-    private final int id = 42;
-    private final String jsonrpc = RandomOrgClient.JSONRPC_VERSION;
-    private final String method = "generateIntegers";
-    private final GenerateIntegersRequestParams params;
+
+    public GenerateIntegersRequestData(GenerateIntegersRequestParams params, final String apiKey) {
+        this(params.of(apiKey));
+    }
+
+    public GenerateIntegersRequestData(GenerateIntegersRequestParams params) {
+        this(42, RandomOrgClient.JSONRPC_VERSION, "generateIntegers", params);
+    }
 }

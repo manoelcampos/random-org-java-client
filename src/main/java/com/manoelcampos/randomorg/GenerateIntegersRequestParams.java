@@ -1,34 +1,37 @@
 package com.manoelcampos.randomorg;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
-
 /**
- *  @author Manoel Campos da Silva Filho
+ * @param n           The number of random integers to generate
+ * @param min         The minimum value for a generated random int.
+ * @param max         The maximum value for a generated random int.
+ * @param replacement Enable generation of duplicated integers (true) or not (false).
+ * @author Manoel Campos da Silva Filho
  */
-@Getter @Setter @Accessors(chain = true)
-class GenerateIntegersRequestParams {
+record GenerateIntegersRequestParams(int n, int min, int max, boolean replacement, String apiKey)
+{
     public static final int MIN_VALUE = -100000000;
-    public static final int MAX_VALUE =  100000000;
+    public static final int MAX_VALUE = 100000000;
 
-    @Setter(AccessLevel.PROTECTED)
-    private String apiKey;
+    GenerateIntegersRequestParams {
+        if(n <= 0)
+            throw new IllegalArgumentException("n must be greater than 0");
 
-    /** The number of random integers to generate */
-    private final int n;
+        if(min < GenerateIntegersRequestParams.MIN_VALUE)
+            throw new IllegalArgumentException("minValue cannot be smaller than " + MIN_VALUE);
 
-    /** The minimum value for a generated random int. */
-    private final int min;
-
-    /** The maximum value for a generated random int. */
-    private final int max;
+        if(max > GenerateIntegersRequestParams.MAX_VALUE)
+            throw new IllegalArgumentException("minValue cannot be higher than " + MAX_VALUE);
+    }
 
     /**
-     * Enable generation of duplicated integers (true) or not (false).
+     * Clones the object, copying all fields from the source object,
+     * except the {@link #apiKey}, that is set to the informed value.
+     *
+     * @param apiKey the API key to set in the new object
      */
-    private boolean replacement;
+    GenerateIntegersRequestParams of(final String apiKey){
+        return new GenerateIntegersRequestParams(n, min, max, replacement, apiKey);
+    }
 
     /**
      * Instantiates a GenerateIntegersRequestParams that indicates to
@@ -64,27 +67,7 @@ class GenerateIntegersRequestParams {
         this(n, min, max, true);
     }
 
-    /**
-     * Instantiates a GenerateIntegersRequestParams that indicates to
-     * generate random integers between a given [min .. max] interval.
-     * @param n the number of random integers to generate
-     * @param min the minimum value for a generated random int
-     * @param max the maximum value for a generated random int
-     * @param replacement Enable generation of duplicated integers (true) or not (false).
-     */
-    GenerateIntegersRequestParams(final int n, final int min, final int max, final boolean replacement) {
-        if(n <= 0)
-            throw new IllegalArgumentException("n must be greater than 0");
-
-        if(min < GenerateIntegersRequestParams.MIN_VALUE)
-            throw new IllegalArgumentException("minValue cannot be smaller than " + MIN_VALUE);
-
-        if(max > GenerateIntegersRequestParams.MAX_VALUE)
-            throw new IllegalArgumentException("minValue cannot be higher than " + MAX_VALUE);
-
-        this.n = n;
-        this.min = min;
-        this.max = max;
-        this.replacement = replacement;
+    GenerateIntegersRequestParams(final int n, final int min, final int max, final boolean replacement){
+        this(n, min, max, replacement, "");
     }
 }

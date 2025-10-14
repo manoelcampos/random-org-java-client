@@ -75,7 +75,7 @@ public class RandomOrgClient implements RandomNumberGenerator {
     }
 
     private int[] generateIntegers(final GenerateIntegersRequestParams params) {
-        final var data = new GenerateIntegersRequestData(params.setApiKey(API_KEY));
+        final var data = new GenerateIntegersRequestData(params, API_KEY);
         try {
             final var json = objectMapper.writeValueAsString(data);
             final var req =
@@ -87,7 +87,8 @@ public class RandomOrgClient implements RandomNumberGenerator {
 
             final String res = client.send(req, HttpResponse.BodyHandlers.ofString()).body();
             final var generateIntegersResponse = objectMapper.readValue(res, GenerateIntegersResponse.class);
-            return generateIntegersResponse.getResult().getRandom().getData();
+            System.out.println(generateIntegersResponse);
+            return generateIntegersResponse.result().random().data();
         } catch (URISyntaxException | InterruptedException | IOException e) {
             throw new RuntimeException(e);
         }
